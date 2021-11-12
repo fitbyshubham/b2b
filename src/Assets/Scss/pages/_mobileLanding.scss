@@ -1,0 +1,129 @@
+.mobile-landing {
+
+  &__header {
+    border-radius: 0 0 50px 50px;
+    background: #6481e4;
+    text-align: center;
+
+    &-heading {
+      font-family: Poppins, sans-serif;
+      font-size: 24px;
+      color: $color-white;
+      padding-top: 50px;
+    }
+
+    &-img {
+      width: 95px;
+      filter: brightness(0) invert(1);
+    }
+
+    &-auth {
+      padding-bottom: 45px;
+      padding-top: 20px;
+    }
+
+    &-btn {
+      width: 80%;
+      padding: 11px;
+      border-radius: 4px;
+      color: #333;
+      font-size: 16px;
+      font-family: Poppins, sans-serif;
+      font-weight: 600;
+      background-color: $color-white;
+      margin: 5px;
+    }
+  }
+
+  &__download {
+    background: #f0f3fd;
+    text-align: center;
+
+    &-quote {
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      padding: 50px 36px 36px 36px;
+    }
+
+    &-text {
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    &-stores {
+      padding-bottom: 36px;
+    }
+  }
+
+  &__features {
+    background: #fff;
+    text-align: center;
+
+    &-heading {
+      font-family: Poppins, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #6481e4;
+      padding: 50px 36px 36px 36px;
+    }
+
+    &-feature {
+
+      &__img {
+        width: 180px;
+      }
+
+      &__heading {
+        font-family: Poppins, sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: #333;
+        padding: 0 36px 0 36px;
+      }
+
+      &__about {
+        font-family: Poppins, sans-serif;
+        font-size: 14px;
+        color: #333;
+        padding: 0 36px 36px 36px;
+      }
+    }
+
+    &-btn {
+      width: 80%;
+      border-radius: 4px;
+      background: $color-orange;
+      padding: 11px;
+      color: $color-white;
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 36px 0;
+    }
+  }
+
+  &__footer {
+    background: #f0f3fd;
+    text-align: center;
+
+    &-text {
+      padding: 50px 36px 0 36px;
+      font-family: Poppins, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    &-legal {
+      padding: 10px 36px 36px 36px;
+      font-family: Poppins, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+}

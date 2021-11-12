@@ -1,0 +1,148 @@
+.edit-profile {
+
+  &__container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2rem 0 2rem;
+
+    @include respond(tab-port) {
+      padding: 2rem 0 0 0;
+    }
+  }
+
+  &__edit-button {
+    display: none;
+  }
+
+  &__greeting-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 0 0 10px 0;
+
+    @include respond(tab-port) {
+      padding-left: 15px;
+    }
+  }
+
+  &__card-content {
+    padding: 20px 15px;
+    display: flex;
+    justify-content: space-between;
+
+    @include respond(tab-land) {
+      display: unset;
+      justify-content: unset;
+    }
+  }
+
+  &__content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include respond(tab-port) {
+      align-items: normal;
+    }
+  }
+
+  &__info-wrapper {
+    margin: 0 0 0 10px;
+
+    &__name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    &__role {
+      font-size: 14px;
+      opacity: 0.8;
+      color: #538fe1;
+      font-weight: 500;
+    }
+
+    &__heading {
+      font-size: 0.8rem;
+    }
+
+    &__text {
+      font-size: 0.9rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    &__add-mobile {
+      color: #4f86e7;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration-line: underline;
+      cursor: pointer;
+    }
+  }
+
+  &__icons {
+    background-color: #eff3fd;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__verified {
+    margin: 0 0 0 5px;
+  }
+
+  &__verify-email-strip {
+    align-items: center;
+    padding: 10px 0;
+    background-color: #ffe5e5;
+    font-size: 0.9rem;
+  }
+
+  &__desktop {
+    @include respond(tab-land) {
+      display: none;
+    }
+  }
+
+  &__tab {
+    display: none;
+
+    @include respond(tab-land) {
+      display: block;
+      padding: 0 20px;
+    }
+
+    &__edit-button {
+
+      @include respond(tab-port) {
+        display: none;
+      }
+    }
+
+    &__divider {
+      opacity: 0.4;
+      background-color: #d8d8d8;
+    }
+
+    &__user-details {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 2rem;
+
+      @include respond(tab-port) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    &__user {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

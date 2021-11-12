@@ -1,0 +1,7 @@
+.student__content {
+  margin-left: 240px;
+
+  @include respond(tab-land) {
+    margin-left: 70px;
+  }
+}

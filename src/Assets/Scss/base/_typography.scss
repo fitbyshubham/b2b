@@ -1,0 +1,44 @@
+.head-text {
+  font-size: 2.5rem;
+}
+
+.secondary-text {
+  color: hsl(210, 22%, 49%);
+}
+
+.sub-text {
+  font-size: 1.5rem;
+
+  @include respond(tab-port) {
+    font-size: 20px;
+  }
+}
+
+.fine-text {
+  font-size: 0.9rem;
+}
+
+.finer-text {
+  font-size: 0.8rem;
+}
+
+.finest-text {
+  font-size: 0.7rem;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.bolder {
+  font-weight: 600;
+}
+
+.route-heading {
+  font-size: 24px;
+  color: #6481e4;
+}
+
+.red {
+  color: red;
+}

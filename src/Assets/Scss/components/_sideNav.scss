@@ -1,0 +1,15 @@
+.desktop-nav {
+
+  @include respond(tab-land) {
+    display: none;
+  }
+}
+
+.tablets {
+  display: none;
+
+  @include respond(tab-land) {
+    display: block;
+  }
+}
+

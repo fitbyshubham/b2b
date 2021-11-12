@@ -1,0 +1,5 @@
+#arrow-icon {
+  @include respond(tab-port) {
+    display: none;
+  }
+}
