@@ -52,16 +52,34 @@ const AssignmentAbout = ({ id, subId }) => {
   const [stats, setStats] = useState({})
   const [open, setOpen] = useState(false)
 
+  const GetSubmittedStudents = (submissionRes, allEnrolledStudentsRes) => {
+    submissionRes.forEach((item) => {
+      item.avatar = allEnrolledStudentsRes.find(
+        (element) => element.name === item.student,
+      ).avatar
+    })
+  }
+
   const GetPendingSubmissions = async (batchId, submissionRes) => {
     const allEnrolledStudentsRes = await GetEnrolledStudentsInBatch(batchId)
+
     const enrolledStudents = allEnrolledStudentsRes.map((a) => a.name)
+
     const submittedStudents = submissionRes.map((a) => a.student)
+    GetSubmittedStudents(submissionRes, allEnrolledStudentsRes)
+
     const pendingStudents = []
 
     enrolledStudents.forEach((element, index) => {
       if (!submittedStudents.includes(element)) {
         pendingStudents.push({ student: enrolledStudents[index] })
       }
+    })
+
+    pendingStudents.forEach((item) => {
+      item.avatar = allEnrolledStudentsRes.find(
+        (element) => element.name === item.student,
+      ).avatar
     })
 
     return pendingStudents
@@ -71,6 +89,7 @@ const AssignmentAbout = ({ id, subId }) => {
     setLoading(true)
     const assignmentRes = await GetAssignmentById(subId)
     const submissionRes = await GetAssignmmentSubmissions(subId)
+
     const pendingSubmissionRes = await GetPendingSubmissions(
       assignmentRes.batch,
       submissionRes,

@@ -423,13 +423,15 @@ const Attendance = ({ id }) => {
                 </Grid>
               </Grid>
 
-              <Grid item xs={3}>
-                <Controls.Button
-                  text="Download Report"
-                  startIcon={<AiOutlineDownload />}
-                  onClick={handleOpenConfirmDialog}
-                />
-              </Grid>
+              {Object.keys(attendance).length !== 0 && (
+                <Grid item xs={3}>
+                  <Controls.Button
+                    text="Download Report"
+                    startIcon={<AiOutlineDownload />}
+                    onClick={handleOpenConfirmDialog}
+                  />
+                </Grid>
+              )}
             </Grid>
             {Object.keys(attendance).length !== 0 && (
               <>

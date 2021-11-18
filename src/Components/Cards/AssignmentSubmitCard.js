@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
-import { CardContent, Divider, Grid, makeStyles } from '@material-ui/core'
-import { IoPersonCircle } from 'react-icons/io5'
+import {
+  CardContent,
+  Divider,
+  Grid,
+  makeStyles,
+  Avatar,
+} from '@material-ui/core'
 import Controls from '../Controls/Controls'
 import Card from './Card'
 import AssignmentResponseDialog from '../Dialogs/AssignmentResponseDialog'
 import { DisplayDate, ConvertTime } from '../../Global/Functions'
+import profilePlaceholder from '../../Assets/Images/profilePlaceholder.svg'
 
 const AssignmentSubmitCard = ({ data, refresh, status }) => {
   const classes = useStyles()
@@ -20,7 +26,10 @@ const AssignmentSubmitCard = ({ data, refresh, status }) => {
           <Grid container className={classes.gridContainer}>
             <Grid item xs={9}>
               <div className={classes.user}>
-                <IoPersonCircle color="#ffa92b" size={50} />
+                <Avatar
+                  src={data.avatar === null ? profilePlaceholder : data.avatar}
+                  style={{ width: 40, height: 40 }}
+                />
                 <div className={classes.userData}>
                   <p className={classes.userName}>{data.student}</p>
                   {data.created_at ? (

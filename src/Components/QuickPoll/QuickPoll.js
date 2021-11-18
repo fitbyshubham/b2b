@@ -129,6 +129,7 @@ const TeacherResultPoll = ({
 
   const handleCloseQuickPollDialog = () => {
     setOpenQuickPollDialog(false)
+    closePoll()
   }
 
   return (
