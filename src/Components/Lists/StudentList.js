@@ -17,7 +17,7 @@ import showSuccessSnackbar from '../Snackbar/successSnackbar'
 import BootstrapTooltip from '../Tooltips/BootstrapTooltip'
 import profilePlaceholder from '../../Assets/Images/profilePlaceholder.svg'
 
-const StudentList = ({ items }) => {
+const StudentList = ({ items, fetchData }) => {
   const classes = useStyles()
   const { AcceptStudentRequest, RejectStudentRequest } =
     useContext(BatchContext)
@@ -51,6 +51,7 @@ const StudentList = ({ items }) => {
           handleError(enqueueSnackbar, err)
         })
     }
+    fetchData()
   }
 
   return (

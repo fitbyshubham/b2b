@@ -239,6 +239,7 @@ const StudentManagement = ({ id }) => {
                             request.status === 'A' ||
                             request.has_joined === true,
                         )}
+                        fetchData={fetchData}
                       />
                     )}
                     {selectedTab === 1 && (
@@ -254,6 +255,7 @@ const StudentManagement = ({ id }) => {
                         items={studentRequestByBatchId.filter(
                           (request) => request.status === 'R',
                         )}
+                        fetchData={fetchData}
                       />
                     )}
                     {selectedTab === 3 && <InvitedStudents batch_id={id} />}
@@ -265,6 +267,7 @@ const StudentManagement = ({ id }) => {
                   <p className={classes.info}>Active or rejected students</p>
                   <StudentList
                     items={searchedData.filter((data) => data.status !== 'D')}
+                    fetchData={fetchData}
                   />
                   <p className={classes.info}>Requests pending</p>
                   <StudentAdmissionList
