@@ -1,7 +1,8 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable*/
 import React, { createContext, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import { useSnackbar } from 'notistack'
+import axios from 'axios'
 import handleError from '../Global/HandleError/handleError'
 import axiosGet from '../Global/Axios/axiosGet'
 import showSuccessSnackbar from '../Components/Snackbar/successSnackbar'
@@ -44,6 +45,8 @@ const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const [verifyEmailStatus, setVerifyEmailStatus] = useState(undefined)
+
+  const [b2bLoginData, setb2bLoginData] = useState()
 
   const Refresh = async () => {
     const payload = {
@@ -97,6 +100,86 @@ const AuthContextProvider = (props) => {
       await __setAuthData(access)
     } catch (err) {
       handleError(enqueueSnackbar, err)
+    }
+  }
+
+  const B2BLogin = async (data) => {
+    try {
+      const headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+      }
+
+      // const normalLoginPayload = {
+      //   email: values.email,
+      //   password: values.password,
+      //   remember_me: values.remember_me,
+      // }
+      // const res = await axiosPost(loginUrl, {
+      //   data: normalLoginPayload,
+      //   headers,
+      // })
+
+      // if (res.status === 200) {
+      // const payload = {
+      //   email: values.email,
+      //   password: values.password,
+
+      // }
+
+      const b2bRes = await axiosPost(
+        `https://34.87.101.190/login/`,
+        {
+          headers,
+          data,
+        },
+      )
+
+      console.log(b2bRes)
+
+      setb2bLoginData(b2bRes.data)
+
+      return b2bRes
+      // }
+    } catch (err) {
+      console.log(err.response)
+      handleError(enqueueSnackbar, err)
+    }
+  }
+
+  const AuthorizeUserGrant = async (data) => {
+    try {
+      
+
+      // console.log('headers', headers)
+      console.log('data', data)
+
+      const payload = {
+        client_id : data.client_id,
+        consent: data.consent,
+        redirect_uri: data.redirect_uri,
+        scopes: data.scopes
+      }
+
+      var config = {
+        method: 'post',
+        url: 'https://34.87.101.190/auth/user/authorize-grant/',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            `Bearer ${data.token}`,
+        },
+        data: payload,
+      }
+
+      const res = await axios(config)
+      
+
+       console.log('res', res)
+
+      return res
+    } catch (err) {
+      // handleError(enqueueSnackbar, err)
+      console.log(err.response)
     }
   }
 
@@ -310,9 +393,10 @@ const AuthContextProvider = (props) => {
   const VerifyPhoneOTP = async (data) => {
     try {
       const payload = {
+        contact: 'P',
         otp: data,
       }
-      const res = await axiosPost(`/verify_phone_otp/`, {
+      const res = await axiosPost(`/verify_otp/`, {
         data: payload,
         headers: getAuthHeader(),
       })
@@ -472,6 +556,9 @@ const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         LogIn,
+        B2BLogin,
+        b2bLoginData,
+        AuthorizeUserGrant,
         authState,
         Register,
         RequestResetPassword,

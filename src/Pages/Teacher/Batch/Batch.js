@@ -118,7 +118,9 @@ const Batch = () => {
               <DashboardProfileCard />
               <MyBatches
                 setBatches={setTeacherBatches}
-                batches={teacherBatches}
+                batches={teacherBatches.results}
+                batchesCount={teacherBatches.count}
+                nextSetString={teacherBatches.next}
               />
             </Suspense>
           </>

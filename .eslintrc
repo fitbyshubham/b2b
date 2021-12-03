@@ -12,6 +12,7 @@
     "camelcase": "off",
     "no-param-reassign": "off",
     "jsx-a11y/media-has-caption": "off",
+    "react/jsx-no-bind": "off",
     "prettier/prettier": [
       "error",
       {

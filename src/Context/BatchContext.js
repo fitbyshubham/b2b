@@ -150,11 +150,26 @@ const BatchContextProvider = (props) => {
     }
   }
 
-  const GetTeacherBatches = async () => {
+  const GetTeacherBatches = async (next) => {
     try {
       setBatchesLoading(true)
-      const res = await axiosGet('/batch/', { headers: getAuthHeader() })
-      setTeacherBatches(res.data)
+      const res = await axiosGet(next || `/batch/?page=1&page_size=12`, {
+        headers: getAuthHeader(),
+      })
+
+      console.log('Batch Res', res)
+
+      if (!next) {
+        setTeacherBatches(res.data)
+      } else {
+        const temp = {
+          count: res.data.count,
+          next: res.data.next,
+          previous: res.data.previous,
+          results: [...teacherBatches.results, res.data.results],
+        }
+        setTeacherBatches(temp)
+      }
       setBatchesLoading(false)
     } catch (err) {
       setBatchesLoading(false)

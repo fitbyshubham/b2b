@@ -14,6 +14,7 @@ import Logo from '../../Assets/Images/edvi-logo-blue.png'
 import feature from '../../Assets/Images/feature.svg'
 import passwordFeature from '../../Assets/Images/passwordFeature.svg'
 import ValidateEmail from './ValidateEmail/ValidateEmail'
+import Consent from './B2BConsent/Consent'
 
 const Auth = () => {
   const classes = useStyles()
@@ -38,7 +39,8 @@ const Auth = () => {
       (action !== 'recovery' &&
         action !== 'register' &&
         action !== 'login' &&
-        action !== 'verify')
+        action !== 'verify' &&
+        action !== 'consent')
     ) {
       history.push('/auth/login')
     }
@@ -69,6 +71,8 @@ const Auth = () => {
     switch (action) {
       case 'login':
         return <EmailLogin />
+      case 'consent':
+        return <Consent />
       case 'register':
         return <MasterForm />
       case 'verify':

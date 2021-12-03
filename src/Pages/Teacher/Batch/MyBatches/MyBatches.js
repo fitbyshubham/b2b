@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { AppBar, Grid, makeStyles, Tab, Tabs } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
+// import InfiniteScrsoll from 'react-infinite-scroller'
+import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 import BatchCard from '../../../../Components/Cards/BatchCard'
 import Controls from '../../../../Components/Controls/Controls'
 import CreateBatchMessage from '../CreateBatchMessage/CreateBatchMessage'
@@ -11,7 +13,13 @@ import { BatchContext } from '../../../../Context/BatchContext'
 import RefreshCard from '../../../../Components/Refresh/RefreshCard'
 import Spinner from '../../../../Components/Progress/Spinner'
 
-const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
+const MyBatches = ({
+  batches,
+  openBatchMenu,
+  setBatches,
+  batchesCount,
+  // nextSetString,
+}) => {
   const classes = useStyles()
 
   const { authState } = useContext(AuthContext)
@@ -26,6 +34,24 @@ const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
     GetArchiveBatch()
   }
 
+  const GetNextSetOfBatches = () => {
+    // GetTeacherBatches(nextSetString)
+
+    console.log('event')
+  }
+
+  // useEffect(() => {
+  //   window.onscroll = function (ev) {
+  //     if (
+  //       window.innerHeight + window.pageYOffset >=
+  //       document.body.offsetHeight
+  //     ) {
+  //       console.log(ev)
+  //       alert("you're at the bottom of the page")
+  //     }
+  //   }
+  // }, [])
+
   const openCreateDialog = () => {
     setCreateBatchDialog(true)
   }
@@ -34,12 +60,17 @@ const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
     setSelectedTab(newValue)
   }
 
+  useBottomScrollListener(GetNextSetOfBatches, {
+    offset: 5000,
+  })
+
   return (
     <>
       <CreateBatchDialog
         open={createBatchDialog}
         setOpen={setCreateBatchDialog}
       />
+
       <Grid container>
         <Grid item xs={12}>
           <div className={`${classes.appBarContainer} margin-top-medium`}>
@@ -50,7 +81,7 @@ const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
                 className={classes.tabContainer}
               >
                 <Tab
-                  label={`Active Batches (${batches.length})`}
+                  label={`Active Batches (${batchesCount})`}
                   className={classes.capitalizeText}
                 />
                 <Tab
@@ -72,7 +103,10 @@ const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
       </Grid>
       {batchesLoading && <Spinner />}
       {!batchesLoading && (
-        <div className={`bg-unset ${classes.padding}`}>
+        <div
+          className={`bg-unset ${classes.padding}`}
+          onScroll={GetNextSetOfBatches}
+        >
           <Grid
             container
             alignItems="center"
@@ -80,7 +114,7 @@ const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
             spacing={2}
           >
             <Grid item xs={12}>
-              <>
+              <Grid>
                 {authState.is_email_verified && selectedTab === 0 && (
                   <>
                     {batches.length > 0 && (
@@ -148,9 +182,11 @@ const MyBatches = ({ batches, openBatchMenu, setBatches }) => {
                     )}
                   </>
                 )}
-              </>
+              </Grid>
             </Grid>
           </Grid>
+
+          {batches.length !== batchesCount && <Spinner />}
         </div>
       )}
       <RefreshCard

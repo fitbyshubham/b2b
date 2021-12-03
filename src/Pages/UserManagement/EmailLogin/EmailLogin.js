@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import {
@@ -21,7 +22,7 @@ import Spinner from '../../../Components/Progress/Spinner'
 import RegularTooltip from '../../../Components/Tooltips/RegularTooltip'
 
 const EmailLogin = () => {
-  const { LogIn, isLoggedIn } = useContext(AuthContext)
+  const { LogIn, isLoggedIn, B2BLogin } = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
@@ -31,6 +32,32 @@ const EmailLogin = () => {
     password: '',
     remember_me: false,
   }
+
+  // Testing
+  const [b2bData, setb2bData] = useState({
+    isB2B: false,
+    client_id: '',
+    redirect_uri: '',
+    scopes: '',
+  })
+  const { search } = location
+
+  useEffect(() => {
+    const client_id = new URLSearchParams(search).get('client_id')
+    const redirect_uri = new URLSearchParams(search).get('redirect_uri')
+    const scopes = new URLSearchParams(search).get('scopes')
+
+    if (client_id && redirect_uri && scopes) {
+      setb2bData({
+        isB2B: true,
+        client_id,
+        redirect_uri,
+        scopes,
+      })
+    }
+  }, [location])
+
+  // console.log(b2bData)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -85,129 +112,157 @@ const EmailLogin = () => {
     e.preventDefault()
     if (validate()) {
       setIsLoading(true)
-      await LogIn({
-        ...values,
-        email: values.email.trim().toLowerCase(),
-      })
+
+      if (b2bData.isB2B) {
+        console.log('b2blogin', {
+          ...values,
+          email: values.email.trim().toLowerCase(),
+          client_id: b2bData.client_id,
+          redirect_uri: b2bData.redirect_uri,
+          scopes: b2bData.scopes.split(','),
+        })
+        const res = await B2BLogin({
+          ...values,
+          email: values.email.trim().toLowerCase(),
+          client_id: b2bData.client_id,
+          redirect_uri: b2bData.redirect_uri,
+          scopes: b2bData.scopes.split(','),
+        })
+
+        if (res.status === 200) {
+          history.push(
+            `/auth/consent?client_id=${b2bData.client_id}&redirect_uri=${b2bData.redirect_uri}&scopes=${b2bData.scopes}`,
+          )
+        }
+      } else {
+        await LogIn({
+          ...values,
+          email: values.email.trim().toLowerCase(),
+        })
+      }
       setIsLoading(false)
     }
   }
 
   return (
-    <div className="container">
-      <div className="flex-column">
+    <>
+      <div className="container">
         <div className="flex-column">
-          <div>
-            <p className={classes.subtext}>Welcome back </p>
+          <div className="flex-column">
+            <div>
+              <p className={classes.subtext}>Welcome back </p>
+            </div>
+            <div>
+              <p className={classes.headText}>
+                <span className={classes.span}>Sign In</span> to edvi
+              </p>
+            </div>
           </div>
-          <div>
-            <p className={classes.headText}>
-              <span className={classes.span}>Sign In</span> to edvi
-            </p>
-          </div>
-        </div>
-        <Form onSubmit={handleSubmit}>
-          <GoogleLoginBtn />
-          <div className={`margin-bottom-30 margin-top-30 ${classes.divider}`}>
-            <Divider variant="fullWidth" />
-          </div>
-          <div className="form-control width-100">
-            <div className="form-control-label">Email</div>
-            <Controls.Input
-              type="text"
-              name="email"
-              value={values.email}
-              onChange={handleInputChange}
-              autoFocus
-              placeholder="Email"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <HiOutlineMail />
-                  </InputAdornment>
-                ),
-              }}
-              error={errors.email}
-            />
-          </div>
-          <div className="form-control width-100">
-            <div className="form-control-label">Password</div>
-            <Controls.Input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={values.password}
-              onChange={handleInputChange}
-              placeholder="Password"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => {
-                        setShowPassword((prev) => !prev)
-                      }}
-                      aria-label={
-                        showPassword ? 'hide password' : 'show password'
-                      }
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <HiOutlineLockClosed />
-                  </InputAdornment>
-                ),
-              }}
-              error={errors.password}
-            />
-          </div>
-
-          <div className={classes.forgotPassBtn}>
-            <RegularTooltip
-              title="Stay signed in for 30 days. Please do this only on a trusted device"
-              placement="right"
+          <Form onSubmit={handleSubmit}>
+            <GoogleLoginBtn />
+            <div
+              className={`margin-bottom-30 margin-top-30 ${classes.divider}`}
             >
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={values.remember_me}
-                    onChange={handleCheckBoxChange}
-                    inputProps={{ 'aria-label': 'remember me checkbox' }}
-                    color="primary"
-                  />
-                }
-                label="Remember Me"
-                className={classes.label}
+              <Divider variant="fullWidth" />
+            </div>
+            <div className="form-control width-100">
+              <div className="form-control-label">Email</div>
+              <Controls.Input
+                type="text"
+                name="email"
+                value={values.email}
+                onChange={handleInputChange}
+                autoFocus
+                placeholder="Email"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <HiOutlineMail />
+                    </InputAdornment>
+                  ),
+                }}
+                error={errors.email}
               />
-            </RegularTooltip>
-            <p className="fine-text bold">
-              <Link to="/auth/recovery/sendlink" className={classes.link}>
-                <span className={classes.span2}>Forgot Password?</span>
-              </Link>
-            </p>
-          </div>
-          <Controls.Button
-            type="submit"
-            endIcon={<CgArrowLongRight />}
-            startIcon={
-              isLoading && (
-                <Spinner
-                  size={20}
-                  className="margin-left-unset position-unset"
-                  color="inherit"
+            </div>
+            <div className="form-control width-100">
+              <div className="form-control-label">Password</div>
+              <Controls.Input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={values.password}
+                onChange={handleInputChange}
+                placeholder="Password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => {
+                          setShowPassword((prev) => !prev)
+                        }}
+                        aria-label={
+                          showPassword ? 'hide password' : 'show password'
+                        }
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <HiOutlineLockClosed />
+                    </InputAdornment>
+                  ),
+                }}
+                error={errors.password}
+              />
+            </div>
+
+            <div className={classes.forgotPassBtn}>
+              <RegularTooltip
+                title="Stay signed in for 30 days. Please do this only on a trusted device"
+                placement="right"
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values.remember_me}
+                      onChange={handleCheckBoxChange}
+                      inputProps={{ 'aria-label': 'remember me checkbox' }}
+                      color="primary"
+                    />
+                  }
+                  label="Remember Me"
+                  className={classes.label}
                 />
-              )
-            }
-            disabled={
-              isLoading || Boolean(errors.email) || Boolean(errors.password)
-            }
-          >
-            Sign In
-          </Controls.Button>
-        </Form>
+              </RegularTooltip>
+              <p className="fine-text bold">
+                <Link to="/auth/recovery/sendlink" className={classes.link}>
+                  <span className={classes.span2}>Forgot Password?</span>
+                </Link>
+              </p>
+            </div>
+            <Controls.Button
+              type="submit"
+              endIcon={<CgArrowLongRight />}
+              startIcon={
+                isLoading && (
+                  <Spinner
+                    size={20}
+                    className="margin-left-unset position-unset"
+                    color="inherit"
+                  />
+                )
+              }
+              disabled={
+                isLoading || Boolean(errors.email) || Boolean(errors.password)
+              }
+            >
+              Sign In
+            </Controls.Button>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
