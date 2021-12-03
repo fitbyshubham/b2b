@@ -126,13 +126,10 @@ const AuthContextProvider = (props) => {
 
       // }
 
-      const b2bRes = await axiosPost(
-        `https://34.87.101.190/login/`,
-        {
-          headers,
-          data,
-        },
-      )
+      const b2bRes = await axiosPost(`https://34.87.101.190/login/`, {
+        headers,
+        data,
+      })
 
       console.log(b2bRes)
 
@@ -148,16 +145,14 @@ const AuthContextProvider = (props) => {
 
   const AuthorizeUserGrant = async (data) => {
     try {
-      
-
       // console.log('headers', headers)
       console.log('data', data)
 
       const payload = {
-        client_id : data.client_id,
+        client_id: data.client_id,
         consent: data.consent,
         redirect_uri: data.redirect_uri,
-        scopes: data.scopes
+        scopes: data.scopes,
       }
 
       var config = {
@@ -165,16 +160,14 @@ const AuthContextProvider = (props) => {
         url: 'https://34.87.101.190/auth/user/authorize-grant/',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            `Bearer ${data.token}`,
+          Authorization: `Bearer ${data.token}`,
         },
         data: payload,
       }
 
       const res = await axios(config)
-      
 
-       console.log('res', res)
+      console.log('res', res)
 
       return res
     } catch (err) {
